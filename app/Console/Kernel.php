@@ -12,6 +12,10 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\RabbitMqListener::class,
+        \App\Console\Commands\RabbitMqNotificationListener::class,
+        \App\Console\Commands\PublishTicketNotification::class,
+        \App\Console\Commands\CreateTechnician::class,
+        \App\Console\Commands\ListTechnicians::class,
     ];
 
     /**

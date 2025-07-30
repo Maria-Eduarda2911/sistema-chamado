@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ticket;
 use App\Models\Category;
 use App\Models\User;
+use App\Events\TicketCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -60,7 +61,7 @@ class TicketController extends Controller
             'assigned_to' => 'nullable|exists:users,id', // Permitir NULL ou um usuário válido
         ]);
 
-        Ticket::create([
+        $ticket = Ticket::create([
             'user_id' => $request->user_id,
             'category_id' => $request->category_id,
             'title' => $request->title,
@@ -68,6 +69,10 @@ class TicketController extends Controller
             'description' => $request->description,
             'status' => 'open',
         ]);
+
+        // Disparar evento para notificar técnicos
+        $creator = User::find($request->user_id);
+        event(new TicketCreated($ticket, $creator));
 
         return redirect()->route('tickets.index')->with('success', 'Chamado criado com sucesso!');
     }

@@ -27,9 +27,14 @@
                 </a>
             </div>
 
-            <!-- Direita: Avatar do Usuário e Dropdown -->
-            <div class="flex items-center space-x-4" x-data="{ open: false }" @click.away="open = false">
-                <div class="relative">
+            <!-- Direita: Notificações, Avatar do Usuário e Dropdown -->
+            <div class="flex items-center space-x-4">
+                <!-- Sino de Notificações (apenas para técnicos) -->
+                @if(auth()->user()->is_technician || auth()->user()->is_admin)
+                    <x-notification-bell />
+                @endif
+
+                <div x-data="{ open: false }" @click.away="open = false">
                     <!-- Botão do Avatar -->
                     <button @click="open = !open"
                         class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center hover:bg-blue-200 transition-colors cursor-pointer"
@@ -40,28 +45,38 @@
                     </button>
 
                     <!-- Dropdown Menu -->
-                    <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-100"
-                        x-transition:enter-start="transform opacity-0 scale-95"
-                        x-transition:enter-end="transform opacity-100 scale-100"
-                        x-transition:leave="transition ease-in duration-75"
-                        x-transition:leave-start="transform opacity-100 scale-100"
-                        x-transition:leave-end="transform opacity-0 scale-95"
-                        class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+                    <div class="relative">
+                        <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-100"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-75"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
 
-                        @can('admin', Auth::user())
-                            <a href="{{ route('admin.config') }}"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                                Configurações Admin
-                            </a>
-                        @endcan
-                        <!-- Logout -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit"
-                                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                                Sair
-                            </button>
-                        </form>
+                            @can('admin', Auth::user())
+                                <a href="{{ route('admin.config') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                                    Configurações Admin
+                                </a>
+                            @endcan
+
+                            @if(auth()->user()->is_technician || auth()->user()->is_admin)
+                                <a href="{{ route('notifications.index') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                                    Notificações
+                                </a>
+                            @endif
+
+                            <!-- Logout -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit"
+                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                                    Sair
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

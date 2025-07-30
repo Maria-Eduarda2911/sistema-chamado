@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'is_admin',
+        'is_technician',
     ];
 
     /**
@@ -50,5 +51,13 @@ class User extends Authenticatable
     public function tickets()
     {
         return $this->hasMany(Ticket::class);
+    }
+
+    /**
+     * Scope para buscar apenas técnicos
+     */
+    public function scopeTechnicians($query)
+    {
+        return $query->where('is_technician', true);
     }
 }

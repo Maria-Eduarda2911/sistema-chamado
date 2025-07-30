@@ -3,10 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  @auth
+  <meta name="user-id" content="{{ auth()->user()->id }}">
+  <meta name="is-technician" content="{{ auth()->user()->is_technician || auth()->user()->is_admin ? '1' : '0' }}">
+  @endauth
   <title>{{ config('app.name', 'Laravel') }}</title>
 
   {{-- Tailwind CDN (opcional) --}}
   <script src="https://cdn.tailwindcss.com"></script>
+  {{-- Alpine.js CDN --}}
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   {{-- OU via Vite --}}
   @vite(['resources/css/app.css'])
 
@@ -42,6 +49,9 @@
 
   {{-- Scripts --}}
   @vite(['resources/js/app.js'])
+  @auth
+  <script src="{{ asset('js/notifications.js') }}"></script>
+  @endauth
   @stack('scripts')
 </body>
 </html>

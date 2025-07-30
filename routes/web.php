@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class)->only(['store','destroy']);
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    
+    // Rotas de notificações
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::patch('/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('mark-as-read');
+        Route::patch('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-as-read');
+        Route::get('/unread', [NotificationController::class, 'getUnreadNotifications'])->name('unread');
+        Route::delete('/{id}', [NotificationController::class, 'destroy'])->name('destroy');
+    });
 });
 
 // Rotas de logout, password reset etc.
