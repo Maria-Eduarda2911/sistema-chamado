@@ -14,6 +14,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   {{-- Alpine.js CDN --}}
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  {{-- Chart.js para gráficos --}}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   {{-- OU via Vite --}}
   @vite(['resources/css/app.css'])
 
@@ -23,6 +25,7 @@
         display: none !important;
       }
     }
+    [x-cloak] { display: none !important; }
   </style>
 </head>
 <body class="bg-gray-100 font-sans antialiased">

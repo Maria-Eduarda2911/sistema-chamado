@@ -14,6 +14,15 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'laravel-red': {
+                    'light': '#ff8c8c',
+                    'DEFAULT': '#f55247',
+                    'dark': '#de3629',
+                },
+                'primary': defaultTheme.colors.indigo,
+                'secondary': defaultTheme.colors.gray,
+            }
         },
     },
 
